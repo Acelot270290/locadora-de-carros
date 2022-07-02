@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class MarcaController extends Controller
 {
+
+    public function __construct(Marca $marca){
+        $this->marca = $marca;
+
+    }
+        
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +20,8 @@ class MarcaController extends Controller
      */
     public function index()
     {
-        //
+        $marca = $this->marca->all();
+        return $marca;
     }
 
     /**
@@ -35,18 +42,20 @@ class MarcaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $marca = $this->marca->create($request->all());
+        return $marca;
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Marca  $marca
+     * @param  Intger
      * @return \Illuminate\Http\Response
      */
-    public function show(Marca $marca)
+    public function show($id)
     {
-        //
+       $marca = $this->marca->find($id);
+        return $marca;
     }
 
     /**
@@ -64,22 +73,30 @@ class MarcaController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Marca  $marca
+     * @param  Integer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Marca $marca)
+    public function update(Request $request, $id)
     {
-        //
+       print_r($request->all()); //os dados atualizados
+       echo '<hr>';
+
+       $marca = $this->marca->find($id);
+       $marca->update($request->all());
+       
+        return $marca;
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Marca  $marca
+     * @param  Integer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Marca $marca)
+    public function destroy($id)
     {
-        //
+        $marca = $this->marca->find($id);
+        $marca->delete();
+        return ['msg' => 'A marca '. $marca->nome . ' foi deltada com Sucesso!'];
     }
 }
